@@ -1,0 +1,46 @@
+services:
+  backend:
+    build:
+      context: ./express-backend
+      dockerfile: Dockerfile
+    image: template-backend:latest
+    container_name: template-backend
+
+    # có thể thay đổi host ở đây (VD: 5000:5000 -> 8080:5000 nếu host 8080 chưa được sử dụng)
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+    env_file:
+      - ./express-backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./react-frontend
+      dockerfile: Dockerfile
+    image: template-frontend:latest
+    container_name: template-frontend
+
+    # có thể thay đổi host ở đây (VD: 80:80 -> 8081:80 nếu host 8081 chưa được sử dụng)
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  spring-backend:
+    build:
+      context: ./spring-backend
+      dockerfile: Dockerfile
+    image: template-spring-backend:latest
+    container_name: template-spring-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      PORT: 8080
+    env_file:
+      - ./spring-backend/.env
+    restart: unless-stopped

@@ -1,0 +1,36 @@
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: spring-backend
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+# Application Custom Configuration
+app:
+  name: "Spring Boot RESTful API Server"
+  version: "1.0.0"
+  author: "Chu Thế Văn (VanCt)"
+  cors:
+    allowed-origins: ${CORS_ORIGIN:*}
+    allowed-methods:
+      - GET
+      - POST
+      - PUT
+      - PATCH
+      - DELETE
+      - OPTIONS
+    allowed-headers: "*"
+    allow-credentials: false
+    max-age: 3600
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
