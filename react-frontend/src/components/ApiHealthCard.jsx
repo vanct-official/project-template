@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getParallelHealthStatus } from '../services/api';
+import { healthApi } from '../api';
 import CopyButton from './CopyButton';
 
 function SingleBackendView({ result, loading }) {
@@ -159,27 +159,65 @@ export default function ApiHealthCard({ compact = false }) {
   const [lastChecked, setLastChecked] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(false);
 
-  const fetchBoth = useCallback(async () => {
+  const fetchBoth = useCallback(async (signal) => {
     setLoading(true);
     try {
-      const results = await getParallelHealthStatus();
-      setHealthResults(results);
+      const results = await healthApi.getParallelHealth({ signal });
+      if (!signal?.aborted) {
+        setHealthResults(results);
+      }
     } catch (err) {
-      console.error('Error fetching parallel health:', err);
+      if (!signal?.aborted) {
+        console.error('Error fetching parallel health:', err);
+      }
     } finally {
-      setLoading(false);
-      setLastChecked(new Date().toLocaleTimeString('vi-VN'));
+      if (!signal?.aborted) {
+        setLoading(false);
+        setLastChecked(new Date().toLocaleTimeString('vi-VN'));
+      }
     }
   }, []);
 
+  // Initial load with cleanup and request cancellation
   useEffect(() => {
-    fetchBoth();
+    const controller = new AbortController();
+    let isSubscribed = true;
+
+    healthApi
+      .getParallelHealth({ signal: controller.signal })
+      .then((results) => {
+        if (isSubscribed && !controller.signal.aborted) {
+          setHealthResults(results);
+        }
+      })
+      .catch((err) => {
+        if (isSubscribed && !controller.signal.aborted) {
+          console.error('Error fetching parallel health:', err);
+        }
+      })
+      .finally(() => {
+        if (isSubscribed && !controller.signal.aborted) {
+          setLoading(false);
+          setLastChecked(new Date().toLocaleTimeString('vi-VN'));
+        }
+      });
+
+    return () => {
+      isSubscribed = false;
+      controller.abort();
+    };
+  }, []);
+
+  const handleManualRefresh = useCallback(() => {
+    const controller = new AbortController();
+    fetchBoth(controller.signal);
   }, [fetchBoth]);
 
   useEffect(() => {
     if (!autoRefresh) return;
     const interval = setInterval(() => {
-      fetchBoth();
+      const controller = new AbortController();
+      fetchBoth(controller.signal);
     }, 10000);
     return () => clearInterval(interval);
   }, [autoRefresh, fetchBoth]);
@@ -192,7 +230,7 @@ export default function ApiHealthCard({ compact = false }) {
         {/* Express indicator */}
         <button
           type="button"
-          onClick={fetchBoth}
+          onClick={handleManualRefresh}
           className={`btn btn-xs ${express?.success ? 'btn-outline-primary' : 'btn-outline-danger'} d-inline-flex align-items-center gap-1 px-2 py-0-5 rounded-pill`}
           title={`Express (Port 5000): ${express?.success ? `Online (${express.latency}ms)` : 'Offline'}`}
         >
@@ -204,7 +242,7 @@ export default function ApiHealthCard({ compact = false }) {
         {/* Spring Boot indicator */}
         <button
           type="button"
-          onClick={fetchBoth}
+          onClick={handleManualRefresh}
           className={`btn btn-xs ${spring?.success ? 'btn-outline-success' : 'btn-outline-danger'} d-inline-flex align-items-center gap-1 px-2 py-0-5 rounded-pill`}
           title={`Spring Boot (Port 8080): ${spring?.success ? `Online (${spring.latency}ms)` : 'Offline'}`}
         >
@@ -261,7 +299,7 @@ export default function ApiHealthCard({ compact = false }) {
           <button
             type="button"
             className="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
-            onClick={fetchBoth}
+            onClick={handleManualRefresh}
             disabled={loading}
           >
             <i className={`bi bi-arrow-clockwise ${loading ? 'spin-animation' : ''}`} />

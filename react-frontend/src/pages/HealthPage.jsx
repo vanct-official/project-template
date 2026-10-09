@@ -1,7 +1,19 @@
 import ApiHealthCard from '../components/ApiHealthCard';
 import { NavLink } from 'react-router-dom';
+import { API_ENDPOINTS } from '../api';
+
+const expressBase =
+  import.meta.env.VITE_EXPRESS_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  'http://localhost:5000';
+const springBase = import.meta.env.VITE_SPRING_API_URL || 'http://localhost:8080';
 
 export default function HealthPage() {
+  const expressHealthUrl = `${expressBase}${API_ENDPOINTS.health.check}`;
+  const springHealthUrl = `${springBase}${API_ENDPOINTS.health.check}`;
+  const springRootUrl = `${springBase}${API_ENDPOINTS.system.root}`;
+  const expressRootUrl = `${expressBase}${API_ENDPOINTS.system.root}`;
+
   return (
     <div className="container-fluid px-3 px-lg-4 py-4">
       <div className="row justify-content-center">
@@ -46,11 +58,11 @@ export default function HealthPage() {
                   <tbody>
                     <tr>
                       <td><span className="badge bg-primary font-monospace">GET</span></td>
-                      <td><code>http://localhost:5000/api/health</code></td>
+                      <td><code>{expressHealthUrl}</code></td>
                       <td><strong>ExpressJS</strong>: Trạng thái hệ thống, Uptime, RAM (RSS/Heap), Node.js</td>
                       <td>
                         <a
-                          href="http://localhost:5000/api/health"
+                          href={expressHealthUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="btn btn-xs btn-outline-primary"
@@ -61,11 +73,11 @@ export default function HealthPage() {
                     </tr>
                     <tr>
                       <td><span className="badge bg-success font-monospace">GET</span></td>
-                      <td><code>http://localhost:8080/api/health</code></td>
+                      <td><code>{springHealthUrl}</code></td>
                       <td><strong>Spring Boot</strong>: Trạng thái hệ thống, Uptime, RAM (JVM), Java 17</td>
                       <td>
                         <a
-                          href="http://localhost:8080/api/health"
+                          href={springHealthUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="btn btn-xs btn-outline-success"
@@ -76,11 +88,11 @@ export default function HealthPage() {
                     </tr>
                     <tr>
                       <td><span className="badge bg-secondary font-monospace">GET</span></td>
-                      <td><code>http://localhost:8080/</code></td>
+                      <td><code>{springRootUrl}</code></td>
                       <td><strong>Spring Boot</strong>: Root Welcome & Metadata API</td>
                       <td>
                         <a
-                          href="http://localhost:8080/"
+                          href={springRootUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="btn btn-xs btn-outline-secondary"
@@ -91,11 +103,11 @@ export default function HealthPage() {
                     </tr>
                     <tr>
                       <td><span className="badge bg-secondary font-monospace">GET</span></td>
-                      <td><code>http://localhost:5000/</code></td>
+                      <td><code>{expressRootUrl}</code></td>
                       <td><strong>ExpressJS</strong>: Root Welcome & Metadata API</td>
                       <td>
                         <a
-                          href="http://localhost:5000/"
+                          href={expressRootUrl}
                           target="_blank"
                           rel="noreferrer"
                           className="btn btn-xs btn-outline-secondary"
