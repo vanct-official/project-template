@@ -1,5 +1,9 @@
 # 02 — Nguyên Lý Clean Code & Thiết Kế Phần Mềm (Clean Code & Software Design Principles)
 
+> **Cấp độ áp dụng**: BẮT BUỘC (MANDATORY)  
+> **Trạng thái**: ĐÃ PHÊ DUYỆT (APPROVED) | **Phiên bản**: 2.0.0  
+> **Phạm vi**: Toàn bộ dự án (React Frontend, Express Backend, Spring Boot Backend)
+
 ## 1. Mục Đích Tài Liệu (Document Purpose)
 Tài liệu này xác lập các tiêu chuẩn viết code sạch (Clean Code), nguyên lý thiết kế phần mềm nền tảng và kỳ vọng chất lượng mã nguồn trên toàn bộ các dự án Web và Mobile. Mục tiêu nhằm tối đa hóa khả năng đọc hiểu, bảo trì, kiểm thử và năng suất làm việc của đội ngũ kỹ sư, đồng thời ngăn ngừa tình trạng thiết kế phức tạp hóa quá sớm (over-engineering).
 
@@ -237,6 +241,15 @@ Trong quá trình code và review PR, hãy kiểm tra:
 ---
 
 ## 13. Các Tài Liệu Liên Quan Trong Bộ Tiêu Chuẩn
-- [01 — Quy Chuẩn Đặt Tên Trong Lập Trình](./NAMING_CONVENTION.md)
-- [03 — Kiến Trúc & Mẫu Thiết Kế Phần Mềm](./03-architecture-and-design-patterns.md)
-- [05 — Kiểm Thử & Đảm Bảo Chất Lượng Phần Mềm](./05-testing-and-quality-assurance.md)
+
+| Số thứ tự | Tên tài liệu chuẩn hóa | Trọng tâm kỹ thuật |
+| :---: | :--- | :--- |
+| **Portal** | [Cổng Tiêu Chuẩn Kỹ Thuật Dự Án](./README.md) | Khung kiến trúc tổng thể, quy trình RFC & ma trận đọc hiểu |
+| **01** | [Quy Chuẩn Đặt Tên & Cú Pháp Mã Nguồn](./01-naming-conventions-and-syntax-standards.md) | Intention-revealing, Case styles, Bảng tra cứu đa ngôn ngữ |
+| **02** | **Nguyên Lý Clean Code & Thiết Kế Phần Mềm** *(Tài liệu này)* | SOLID, KISS, DRY, Guard clauses, Quản lý độ phức tạp |
+| **03** | [Kiến Trúc & Mẫu Thiết Kế Phần Mềm](./03-architecture-and-design-patterns.md) | Phân tầng Layered, Hexagonal, Dependency Injection, ADR |
+| **04** | [Bảo Mật & Toàn Vẹn Dữ Liệu](./04-security-and-data-integrity.md) | OWASP Top 10, Zero Trust, RBAC/BOLA, Mã hóa & Secrets |
+| **05** | [Kiểm Thử & Đảm Bảo Chất Lượng](./05-testing-and-quality-assurance.md) | Test Pyramid, AAA Pattern, Zero-flakiness, Quality Gates |
+| **06** | [Quy Trình Git & Hợp Tác Nhóm](./06-git-workflow-and-team-collaboration.md) | Conventional Commits, Phân nhánh, Code Review Checklist |
+| **07** | [Thiết Kế API & Cơ Sở Dữ Liệu](./07-api-design-and-database-principles.md) | RESTful contracts, Idempotency, Indexing, Transactions |
+| **08** | [Hiệu Năng, Khả Năng Tiếp Cận & Vận Hành](./08-performance-accessibility-and-operations.md) | Core Web Vitals, a11y WCAG 2.2 AA, SRE & Observability |

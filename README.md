@@ -1,8 +1,27 @@
-# Fullstack Project Template
+# 🚀 Fullstack Project Template
 
-> **Kiến trúc Fullstack hiện đại kết hợp React Front-end và Hệ thống Backend Song Song (Dual RESTful API: ExpressJS & Spring Boot).**
+> **Kiến trúc Fullstack hiện đại** kết hợp **React 19 Front-end** và **Hệ thống Backend Song Song (Dual RESTful API: Express 5 & Spring Boot 3.3)**  
+> Phiên bản: `v2.0.0` | Tác giả: **Chu Thế Văn (VanCt)** | Trạng thái: `ACTIVE`
 
-Dự án mẫu (Project Template) toàn diện được thiết kế theo kiến trúc module chuẩn mực, phục vụ phát triển ứng dụng web hiện đại với giao diện React và hỗ trợ 2 nền tảng Backend phổ biến nhất (Node.js & Java) hoạt động song song hoặc độc lập.
+Dự án template toàn diện được thiết kế theo kiến trúc module chuẩn mực, phục vụ phát triển ứng dụng web hiện đại với giao diện React và hỗ trợ song song 2 nền tảng Backend phổ biến nhất (Node.js & Java). Mỗi dịch vụ được tổ chức theo kiến trúc phân tầng chuẩn, sẵn sàng scale và dễ dàng mở rộng.
+
+---
+
+## 📖 Bộ Tiêu Chuẩn Kỹ Thuật (Engineering Standards)
+
+> Dự án này đi kèm **bộ tài liệu chuẩn hóa kỹ thuật 8 chương** bao gồm toàn bộ vòng đời phát triển phần mềm.
+
+| Tài liệu | Nội dung |
+| :--- | :--- |
+| 📋 [**Cổng Tiêu Chuẩn Kỹ Thuật**](./readme/README.md) | Ma trận điều hướng, lộ trình đọc theo vai trò, quy trình RFC, Definition of Done |
+| **01** · [Quy Chuẩn Đặt Tên & Cú Pháp](./readme/01-naming-conventions-and-syntax-standards.md) | Naming conventions, case styles, bảng tra cứu 8 ngôn ngữ |
+| **02** · [Clean Code & Thiết Kế Phần Mềm](./readme/02-clean-code-and-design-principles.md) | SOLID, KISS, DRY, Guard Clauses, xử lý lỗi chuẩn |
+| **03** · [Kiến Trúc & Mẫu Thiết Kế](./readme/03-architecture-and-design-patterns.md) | Layered Architecture, Dependency Injection, ADR |
+| **04** · [Bảo Mật & Toàn Vẹn Dữ Liệu](./readme/04-security-and-data-integrity.md) | OWASP Top 10, BOLA/IDOR, JWT, Parameterized Queries |
+| **05** · [Kiểm Thử & Đảm Bảo Chất Lượng](./readme/05-testing-and-quality-assurance.md) | Test Pyramid (70-20-10), AAA Pattern, Zero Flakiness |
+| **06** · [Quy Trình Git & Hợp Tác Nhóm](./readme/06-git-workflow-and-team-collaboration.md) | Conventional Commits, GitHub Flow, Code Review Checklist |
+| **07** · [Thiết Kế API & Cơ Sở Dữ Liệu](./readme/07-api-design-and-database-principles.md) | RESTful API Contracts, Idempotency, N+1, Schema Migrations |
+| **08** · [Hiệu Năng, Tiếp Cận & Vận Hành](./readme/08-performance-accessibility-and-operations.md) | Core Web Vitals, WCAG 2.2 AA, Docker, Observability |
 
 ---
 
@@ -250,6 +269,13 @@ CORS_ORIGIN=*
 
 ---
 
-## 👨‍💻 Tác giả
-- **Chu Thế Văn (VanCt)**
-- Dự án mẫu dành cho việc khởi tạo dự án nhanh, thực hành kiến trúc Fullstack hiện đại và tích hợp song song đa nền tảng backend.
+## 👨‍💻 Tác Giả & Đóng Góp
+
+| | |
+|:---|:---|
+| **Tác giả chính** | Chu Thế Văn (VanCt) — `chuthevan450@gmail.com` |
+| **Mục đích** | Template khởi động nhanh cho dự án Fullstack hiện đại, thực hành kiến trúc phân tầng chuẩn mực và tích hợp song song đa nền tảng backend |
+| **Giấy phép** | MIT — Sử dụng tự do cho mục đích cá nhân và thương mại |
+
+> 🤝 Mọi đóng góp cải tiến đều được chào đón. Xem [bộ tiêu chuẩn kỹ thuật](./readme/README.md) để biết quy trình PR và coding conventions trước khi đóng góp.
+

@@ -1,5 +1,9 @@
 # 04 — Bảo Mật & Toàn Vẹn Dữ Liệu (Security & Data Integrity)
 
+> **Cấp độ áp dụng**: BẮT BUỘC (MANDATORY)  
+> **Trạng thái**: ĐÃ PHÊ DUYỆT (APPROVED) | **Phiên bản**: 2.0.0  
+> **Phạm vi**: Toàn bộ dự án (React Frontend, Express Backend, Spring Boot Backend, Database & CI/CD)
+
 ## 1. Mục Đích Tài Liệu (Document Purpose)
 Tài liệu này xác lập các tiêu chuẩn an toàn thông tin, kiểm soát toàn vẹn dữ liệu và yêu cầu lập trình phòng thủ (Defensive Programming) cho toàn bộ đội ngũ phát triển ứng dụng Web và Mobile. Việc tuân thủ tài liệu này đảm bảo hệ thống được bảo vệ vững chắc trước các lỗ hổng bảo mật nghiêm trọng (bao gồm OWASP Top 10), chống thất thoát dữ liệu và ngăn chặn truy cập trái phép ở mọi giai đoạn vòng đời phần mềm.
 
@@ -196,6 +200,15 @@ export async function getInvoiceDetails(invoiceId: string, currentUserId: string
 ---
 
 ## 13. Các Tài Liệu Liên Quan Trong Bộ Tiêu Chuẩn
-- [01 — Quy Chuẩn Đặt Tên Trong Lập Trình](./NAMING_CONVENTION.md)
-- [03 — Kiến Trúc & Mẫu Thiết Kế Phần Mềm](./03-architecture-and-design-patterns.md)
-- [07 — Thiết Kế API & Cơ Sở Dữ Liệu](./07-api-design-and-database-principles.md)
+
+| Số thứ tự | Tên tài liệu chuẩn hóa | Trọng tâm kỹ thuật |
+| :---: | :--- | :--- |
+| **Portal** | [Cổng Tiêu Chuẩn Kỹ Thuật Dự Án](./README.md) | Khung kiến trúc tổng thể, quy trình RFC & ma trận đọc hiểu |
+| **01** | [Quy Chuẩn Đặt Tên & Cú Pháp Mã Nguồn](./01-naming-conventions-and-syntax-standards.md) | Intention-revealing, Case styles, Bảng tra cứu đa ngôn ngữ |
+| **02** | [Nguyên Lý Clean Code & Thiết Kế Phần Mềm](./02-clean-code-and-design-principles.md) | SOLID, KISS, DRY, Guard clauses, Quản lý độ phức tạp |
+| **03** | [Kiến Trúc & Mẫu Thiết Kế Phần Mềm](./03-architecture-and-design-patterns.md) | Phân tầng Layered, Hexagonal, Dependency Injection, ADR |
+| **04** | **Bảo Mật & Toàn Vẹn Dữ Liệu** *(Tài liệu này)* | OWASP Top 10, Zero Trust, RBAC/BOLA, Mã hóa & Secrets |
+| **05** | [Kiểm Thử & Đảm Bảo Chất Lượng](./05-testing-and-quality-assurance.md) | Test Pyramid, AAA Pattern, Zero-flakiness, Quality Gates |
+| **06** | [Quy Trình Git & Hợp Tác Nhóm](./06-git-workflow-and-team-collaboration.md) | Conventional Commits, Phân nhánh, Code Review Checklist |
+| **07** | [Thiết Kế API & Cơ Sở Dữ Liệu](./07-api-design-and-database-principles.md) | RESTful contracts, Idempotency, Indexing, Transactions |
+| **08** | [Hiệu Năng, Khả Năng Tiếp Cận & Vận Hành](./08-performance-accessibility-and-operations.md) | Core Web Vitals, a11y WCAG 2.2 AA, SRE & Observability |

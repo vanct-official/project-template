@@ -1,5 +1,9 @@
 # 07 — Thiết Kế API & Cơ Sở Dữ Liệu (API Design & Database Principles)
 
+> **Cấp độ áp dụng**: BẮT BUỘC (MANDATORY)  
+> **Trạng thái**: ĐÃ PHÊ DUYỆT (APPROVED) | **Phiên bản**: 2.0.0  
+> **Phạm vi**: Toàn bộ dịch vụ Backend (Express, Spring Boot), RESTful APIs, Database Schemas & Migrations
+
 ## 1. Mục Đích Tài Liệu (Document Purpose)
 Tài liệu này xác lập các tiêu chuẩn kỹ thuật chuẩn mực cho việc thiết kế giao diện lập trình ứng dụng RESTful API, cấu trúc lưu trữ dữ liệu, quản lý giao dịch (Transactions) và duy trì tính toàn vẹn cơ sở dữ liệu. Tài liệu đảm bảo các dịch vụ backend cung cấp hợp đồng giao tiếp nhất quán, dễ dự đoán cho phía client và vận hành trên nền tảng lưu trữ bền vững, tối ưu hiệu năng.
 
@@ -119,7 +123,16 @@ Khi gửi hoặc nhận Webhook:
 
 ---
 
-## 6. Thực Hành Tốt Và Anti-Pattern Cần Tránh
+## 6. Chiến Lược Tiến Hóa Schema Không Gián Đoạn (Expand & Contract Pattern)
+Khi thay đổi cấu trúc bảng hoặc nâng cấp API trên môi trường Production, TUYỆT ĐỐI KHÔNG thực hiện thay đổi phá vỡ tương thích (Breaking Change) trong một lần deploy. BẮT BUỘC áp dụng mô hình **Expand and Contract (Parallel Run)**:
+1. **Giai đoạn 1 (Expand)**: Thêm cột mới hoặc trường API mới vào hệ thống (giữ nguyên cột cũ). Cột mới phải là `NULLABLE` hoặc có `DEFAULT`.
+2. **Giai đoạn 2 (Parallel Write)**: Backend ghi dữ liệu song song vào cả cột cũ và cột mới; đọc dữ liệu ưu tiên từ cột mới.
+3. **Giai đoạn 3 (Backfill Data)**: Chạy script nền di chuyển dữ liệu lịch sử từ cột cũ sang cột mới.
+4. **Giai đoạn 4 (Contract)**: Chuyển toàn bộ client sang dùng trường mới, sau đó xóa bỏ cột cũ và mã code cũ một cách an toàn.
+
+---
+
+## 7. Thực Hành Tốt Và Anti-Pattern Cần Tránh
 
 | Danh mục | Anti-Pattern (Thói quen xấu ❌) | Giải pháp Tiêu Chuẩn (✅) |
 | :--- | :--- | :--- |
@@ -131,7 +144,7 @@ Khi gửi hoặc nhận Webhook:
 
 ---
 
-## 7. Ví Dụ Mã Nguồn Thực Tế (Code Examples)
+## 8. Ví Dụ Mã Nguồn Thực Tế (Code Examples)
 
 ### 7.1 Controller REST Phân Trang Chuẩn Mực (TypeScript / Express)
 ```typescript
@@ -200,7 +213,7 @@ export function verifyWebhookSignature(payload: string, signature: string, secre
 
 ---
 
-## 8. Lưu Ý Theo Từng Công Nghệ Cụ Thể (Technology Notes)
+## 9. Lưu Ý Theo Từng Công Nghệ Cụ Thể (Technology Notes)
 - **PostgreSQL**:
   - Luôn chọn kiểu `TIMESTAMPTZ` để lưu thời gian kèm múi giờ chuẩn, tránh sai lệch múi giờ khi triển khai đa vùng.
   - Tận dụng kiểu cột `JSONB` để lưu trữ các thuộc tính linh hoạt mà không cần đổi sang NoSQL.
@@ -216,7 +229,7 @@ export function verifyWebhookSignature(payload: string, signature: string, secre
 
 ---
 
-## 9. Bảng Tự Kiểm Tra Thực Tế (Implementation Checklist)
+## 10. Bảng Tự Kiểm Tra Thực Tế (Implementation Checklist)
 - [ ] Đường dẫn API sử dụng danh từ số nhiều và dùng đúng động từ HTTP.
 - [ ] Định dạng lỗi phản hồi tuân thủ cấu trúc JSON thống nhất với mã lỗi nghiệp vụ.
 - [ ] Tất cả endpoint trả về danh sách đều áp dụng giới hạn phân trang bắt buộc.
@@ -229,14 +242,14 @@ export function verifyWebhookSignature(payload: string, signature: string, secre
 
 ---
 
-## 10. Sai Lầm Phổ Biến Và Ngoại Lệ (Mistakes & Exceptions)
+## 11. Sai Lầm Phổ Biến Và Ngoại Lệ (Mistakes & Exceptions)
 - **Tạo sự thay đổi phá vỡ tương thích (Breaking Changes)**: Tự ý xóa hoặc đổi tên trường trong API công khai sẽ làm sập ứng dụng Mobile đã cài đặt của khách hàng. Hãy luôn bổ sung trường mới hoặc nâng phiên bản API (`/api/v2`).
 - **Lỗi truy vấn N+1 (N+1 Query Problem)**: Lấy danh sách 100 đơn hàng, sau đó chạy vòng lặp 100 câu query để lấy thông tin người mua. Hãy dùng lệnh `JOIN` hoặc gom truy vấn theo mảng ID (`WHERE id IN (...)`).
 - **Đánh Index bừa bãi**: Đánh index trên tất cả các cột của bảng sẽ làm chậm đáng kể tốc độ ghi (INSERT/UPDATE). Chỉ đánh index trên các cột thực sự tham gia vào `WHERE`, `JOIN` và `ORDER BY`.
 
 ---
 
-## 11. Tài Liệu Tham Khảo Uy Tín (References)
+## 12. Tài Liệu Tham Khảo Uy Tín (References)
 - Hướng dẫn thiết kế REST API của Microsoft: https://github.com/microsoft/api-guidelines
 - Chuẩn định dạng lỗi RFC 7807 (Problem Details for HTTP APIs): https://datatracker.ietf.org/doc/html/rfc7807
 - Tài liệu chính thức PostgreSQL về Transaction & Index: https://www.postgresql.org/docs/current/
@@ -245,8 +258,16 @@ export function verifyWebhookSignature(payload: string, signature: string, secre
 
 ---
 
-## 12. Các Tài Liệu Liên Quan Trong Bộ Tiêu Chuẩn
-- [01 — Quy Chuẩn Đặt Tên Trong Lập Trình](./NAMING_CONVENTION.md)
-- [03 — Kiến Trúc & Mẫu Thiết Kế Phần Mềm](./03-architecture-and-design-patterns.md)
-- [04 — Bảo Mật & Toàn Vẹn Dữ Liệu](./04-security-and-data-integrity.md)
-- [08 — Hiệu Năng, Khả Năng Tiếp Cận & Vận Hành](./08-performance-accessibility-and-operations.md)
+## 13. Các Tài Liệu Liên Quan Trong Bộ Tiêu Chuẩn
+
+| Số thứ tự | Tên tài liệu chuẩn hóa | Trọng tâm kỹ thuật |
+| :---: | :--- | :--- |
+| **Portal** | [Cổng Tiêu Chuẩn Kỹ Thuật Dự Án](./README.md) | Khung kiến trúc tổng thể, quy trình RFC & ma trận đọc hiểu |
+| **01** | [Quy Chuẩn Đặt Tên & Cú Pháp Mã Nguồn](./01-naming-conventions-and-syntax-standards.md) | Intention-revealing, Case styles, Bảng tra cứu đa ngôn ngữ |
+| **02** | [Nguyên Lý Clean Code & Thiết Kế Phần Mềm](./02-clean-code-and-design-principles.md) | SOLID, KISS, DRY, Guard clauses, Quản lý độ phức tạp |
+| **03** | [Kiến Trúc & Mẫu Thiết Kế Phần Mềm](./03-architecture-and-design-patterns.md) | Phân tầng Layered, Hexagonal, Dependency Injection, ADR |
+| **04** | [Bảo Mật & Toàn Vẹn Dữ Liệu](./04-security-and-data-integrity.md) | OWASP Top 10, Zero Trust, RBAC/BOLA, Mã hóa & Secrets |
+| **05** | [Kiểm Thử & Đảm Bảo Chất Lượng](./05-testing-and-quality-assurance.md) | Test Pyramid, AAA Pattern, Zero-flakiness, Quality Gates |
+| **06** | [Quy Trình Git & Hợp Tác Nhóm](./06-git-workflow-and-team-collaboration.md) | Conventional Commits, Phân nhánh, Code Review Checklist |
+| **07** | **Thiết Kế API & Cơ Sở Dữ Liệu** *(Tài liệu này)* | RESTful contracts, Idempotency, Indexing, Transactions |
+| **08** | [Hiệu Năng, Khả Năng Tiếp Cận & Vận Hành](./08-performance-accessibility-and-operations.md) | Core Web Vitals, a11y WCAG 2.2 AA, SRE & Observability |
