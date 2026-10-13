@@ -1,0 +1,23 @@
+---
+description: Project-wide standards for AI-assisted development
+alwaysApply: true
+---
+
+# Project Standards
+
+The repository standards are authoritative. The canonical entry point is [AGENTS.md](../../AGENTS.md), and the detailed engineering rules are under [docs/development-standards](../../docs/development-standards).
+
+Before editing code, inspect the relevant files, understand the current architecture, and read the applicable standards in the repository. Keep changes minimal, secure, testable, and consistent with the project’s existing patterns.
+
+## Required rules
+
+- Follow the repository naming and design conventions.
+- Protect existing functionality and public interfaces unless the task explicitly requires a change.
+- Do not hardcode secrets or unsafe configuration values.
+- Validate inputs and protect against common injection and authorization issues.
+- Add or update tests when behavior changes.
+- Run relevant verification steps and report actual results.
+
+## Priority
+
+Repository rules override generic coding preferences, but higher-priority system and user requirements always win. If a project rule conflicts with a general rule, follow the documented project requirement unless it creates a security or correctness problem.
