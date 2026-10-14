@@ -1,0 +1,28 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Aa]rtifacts/
+[Pp]ublish/
+
+# Visual Studio and IDE files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test and coverage output
+[Tt]est[Rr]esult*/
+[Cc]overage*/
+
+# Temporary files
+*.log
+*.cache
+*.tmp
+
+# Local environment files
+.env
+.env.*
+!.env.example

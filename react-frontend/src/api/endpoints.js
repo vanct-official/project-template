@@ -12,6 +12,13 @@ export const API_ENDPOINTS = {
   // Health monitoring endpoints
   health: {
     check: `${API_PREFIX}/health`,
+    aspnetCheck: `${API_PREFIX}/v1/Health`,
+  },
+
+  aspnetSamples: {
+    list: `${API_PREFIX}/v1/Sample`,
+    detail: (id) => `${API_PREFIX}/v1/Sample/${encodeURIComponent(id)}`,
+    create: `${API_PREFIX}/v1/Sample`,
   },
 
   // System & root metadata endpoints

@@ -92,5 +92,8 @@ export const expressHttp = http;
 export const springHttp = createHttpClient(
   import.meta.env.VITE_SPRING_API_URL || 'http://localhost:8080'
 );
+export const aspnetHttp = createHttpClient(
+  import.meta.env.VITE_ASPNET_API_URL || 'http://localhost:5037'
+);
 
 export default http;

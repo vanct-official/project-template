@@ -21,7 +21,7 @@ Thư mục `src/components/` chứa các thành phần giao diện (UI Component
 ```text
 src/components/
 ├── README.md           # Hướng dẫn chi tiết về thư mục components
-├── ApiHealthCard.jsx   # Thẻ giám sát kết nối và tài nguyên Backend song song (Express & Spring)
+├── ApiHealthCard.jsx   # Thẻ giám sát kết nối các backend (Express, Spring & ASP.NET Core)
 ├── CategoryTabs.jsx    # Thanh tab chọn danh mục (Desktop & Mobile)
 ├── CommandCard.jsx     # Thẻ hiển thị lệnh, nút copy từng bước, gắn sao yêu thích
 ├── CommandList.jsx     # Danh sách lọc lệnh, phân loại type và phân trang/lưới

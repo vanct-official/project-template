@@ -1,4 +1,4 @@
-import { expressHttp, springHttp } from './http';
+import { aspnetHttp, expressHttp, springHttp } from './http';
 import { API_ENDPOINTS } from './endpoints';
 
 /**
@@ -113,19 +113,67 @@ export const healthApi = {
   },
 
   /**
-   * Concurrently check health across both Express and Spring Boot backends
+   * Fetch health and compute latency from ASP.NET Core Backend
+   * @param {object} [options]
+   * @param {AbortSignal} [options.signal] - Optional AbortController signal
+   * @param {import('axios').AxiosRequestConfig} [options.config] - Optional extra Axios options
+   */
+  getAspNetHealth: async ({ signal, ...extraConfig } = {}) => {
+    const startTime = performance.now();
+    const targetUrl = aspnetHttp.defaults.baseURL || 'http://localhost:5037';
+
+    try {
+      const response = await aspnetHttp.get(API_ENDPOINTS.health.aspnetCheck, {
+        signal,
+        ...extraConfig,
+      });
+      const latency = Math.round(performance.now() - startTime);
+
+      return {
+        backend: 'ASP.NET Core',
+        port: new URL(targetUrl).port || (targetUrl.startsWith('https:') ? 443 : 80),
+        url: targetUrl,
+        success: true,
+        data: response.data,
+        latency,
+        statusCode: response.status,
+        timestamp: new Date().toISOString(),
+      };
+    } catch (error) {
+      const latency = Math.round(performance.now() - startTime);
+      return {
+        backend: 'ASP.NET Core',
+        port: new URL(targetUrl).port || (targetUrl.startsWith('https:') ? 443 : 80),
+        url: targetUrl,
+        success: false,
+        error:
+          error.friendlyMessage ||
+          error.response?.data?.message ||
+          error.message ||
+          'Không thể kết nối tới ASP.NET Core Backend (Port 5037)',
+        statusCode: error.statusCode || error.response?.status || 0,
+        latency,
+        rawError: error,
+      };
+    }
+  },
+
+  /**
+   * Concurrently check health across all backend services
    * @param {object} [options]
    * @param {AbortSignal} [options.signal] - Shared AbortController signal
    */
   getParallelHealth: async (options = {}) => {
-    const [expressResult, springResult] = await Promise.all([
+    const [expressResult, springResult, aspnetResult] = await Promise.all([
       healthApi.getExpressHealth(options),
       healthApi.getSpringHealth(options),
+      healthApi.getAspNetHealth(options),
     ]);
 
     return {
       express: expressResult,
       spring: springResult,
+      aspnet: aspnetResult,
     };
   },
 };

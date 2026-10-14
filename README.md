@@ -47,6 +47,17 @@ Dự án template toàn diện được thiết kế theo kiến trúc module ch
          | • Standard ApiResponse     |                      | • Standard ApiResponse     |
          | • Layered Architecture     |                      | • Layered Architecture     |
          +----------------------------+                      +----------------------------+
+                                                 |
+                                                 v
+                                  +----------------------------+
+                                  |     ASP.NET CORE BACKEND   |
+                                  |        (.NET 10 / C#)      |
+                                  |    http://localhost:5037    |
+                                  +----------------------------+
+                                  | • GET /api/v1/Health       |
+                                  | • SQL Server + EF Core     |
+                                  | • Versioned REST API       |
+                                  +----------------------------+
 ```
 
 ---
@@ -58,6 +69,7 @@ Dự án template toàn diện được thiết kế theo kiến trúc module ch
 | **Front-end** | [`react-frontend/`](./react-frontend/) | React 19, Vite, Bootstrap 5, Axios | `3000` | `http://localhost:3000/health` |
 | **Express Backend** | [`express-backend/`](./express-backend/) | Node.js (v20+), Express 5, Helmet, Cors | `5000` | `http://localhost:5000/api/health` |
 | **Spring Backend** | [`spring-backend/`](./spring-backend/) | Java 17 LTS, Spring Boot 3.3.4, Maven | `8080` | `http://localhost:8080/api/health` |
+| **ASP.NET Backend** | [`aspnet-backend/`](./aspnet-backend/) | .NET 10, ASP.NET Core Web API, EF Core | `5037` | `http://localhost:5037/api/v1/Health` |
 
 ---
 
@@ -65,7 +77,7 @@ Dự án template toàn diện được thiết kế theo kiến trúc module ch
 
 ### 1. React Front-end (`react-frontend`)
 - **Developer Toolkit Dashboard**: Kho lệnh mẫu, package và script cấu hình dự án đa danh mục với tìm kiếm tức thì.
-- **Dual API Health Monitor**: Theo dõi tình trạng sức khỏe của cả 2 máy chủ Backend theo thời gian thực (độ trễ phản hồi, Uptime, phân tích bộ nhớ RAM/JVM, xem dữ liệu JSON thô, tự động refresh mỗi 10s).
+- **Multi-API Health Monitor**: Theo dõi Express, Spring Boot và ASP.NET Core theo thời gian thực (độ trễ phản hồi, thông tin môi trường, xem dữ liệu JSON thô, tự động refresh mỗi 10s).
 - **Trang kiểm tra riêng biệt**: Truy cập trực tiếp tại `/health` với bảng danh mục endpoint và kiểm tra kết nối song song.
 - **Theme động (Dark / Light)**: Chuyển đổi giao diện sáng/tối lưu trữ qua `localStorage`.
 
@@ -81,6 +93,11 @@ Dự án template toàn diện được thiết kế theo kiến trúc module ch
 - **Khớp chuẩn định dạng JSON**: Cấu trúc phản hồi `ApiResponse<T>` đồng nhất tuyệt đối với ExpressJS.
 - **Tính toán tài nguyên thực**: Báo cáo chính xác thông số bộ nhớ JVM (`RSS`, `Heap Total`, `Heap Used`), Uptime và phiên bản Java.
 
+### 4. ASP.NET Core Backend (`aspnet-backend`)
+- **API có phiên bản**: Health và sample endpoints theo cấu trúc `/api/v1/...`.
+- **EF Core + SQL Server**: Tách lớp controller, service, data và cấu hình kết nối an toàn qua biến môi trường/User Secrets.
+- **Kết nối React**: Dashboard gọi health endpoint ASP.NET; CORS giới hạn theo danh sách origin của frontend.
+
 ---
 
 ## 📁 Cấu trúc Thư mục Dự án
@@ -88,17 +105,22 @@ Dự án template toàn diện được thiết kế theo kiến trúc module ch
 ```text
 project-template/
 ├── README.md                      # Tài liệu hướng dẫn chung của toàn bộ dự án
-├── docker-compose.yml             # Điều phối chạy toàn bộ 3 dịch vụ qua Docker
+├── docker-compose.yml             # Điều phối React, Express và Spring Boot qua Docker
 │
 ├── react-frontend/                # Ứng dụng Front-end React + Vite
 │   ├── src/
 │   │   ├── components/            # ApiHealthCard, Navbar, SearchBar, CommandCard...
 │   │   ├── pages/                 # Home.jsx, HealthPage.jsx
-│   │   ├── services/api.js        # Axios Client kết nối song song cả Express và Spring
+│   │   ├── services/api.js        # Axios clients cho Express, Spring và ASP.NET Core
 │   │   └── routes/AppRoutes.jsx   # Tuyến đường client: /, /commands, /health
-│   ├── .env                       # Cấu hình VITE_EXPRESS_API_URL & VITE_SPRING_API_URL
+│   ├── .env                       # Cấu hình VITE_*_API_URL cho các backend
 │   ├── Dockerfile
 │   └── package.json
+│
+├── aspnet-backend/                 # Dịch vụ ASP.NET Core Web API (.NET 10)
+│   ├── Controllers/                # HealthController, SampleController
+│   ├── Data/                        # EF Core DbContext
+│   └── Program.cs                   # Cấu hình API, CORS, Authentication
 │
 ├── express-backend/               # Dịch vụ Backend ExpressJS (Node.js)
 │   ├── src/
@@ -140,12 +162,13 @@ project-template/
 - **Node.js**: Phiên bản 20.x hoặc mới hơn (kèm `npm`)
 - **Java**: JDK 17 LTS (Amazon Corretto, Eclipse Temurin hoặc Microsoft OpenJDK)
 - **Maven**: Phiên bản 3.8+ (đã cấu hình trong biến môi trường `PATH`)
+- **.NET SDK**: Phiên bản 10.x
 
 ---
 
 ### Khởi chạy từng dịch vụ (Local Development)
 
-Mở 3 cửa sổ terminal riêng biệt để khởi chạy cả 3 dịch vụ:
+Mở 4 cửa sổ terminal riêng biệt để khởi chạy các dịch vụ:
 
 #### 1. Khởi chạy Express Backend (Cổng 5000)
 ```bash
@@ -164,7 +187,16 @@ mvn spring-boot:run
 > Server hoạt động tại: **`http://localhost:8080`**  
 > Health check: **`http://localhost:8080/api/health`**
 
-#### 3. Khởi chạy React Front-end (Cổng 3000)
+#### 3. Khởi chạy ASP.NET Core Backend (Cổng 5037)
+```bash
+cd aspnet-backend
+dotnet run
+```
+> Server hoạt động tại: **`http://localhost:5037`**
+>
+> Health check: **`http://localhost:5037/api/v1/Health`**
+
+#### 4. Khởi chạy React Front-end (Cổng 3000)
 ```bash
 cd react-frontend
 npm install
@@ -181,6 +213,7 @@ npm run dev
 - **Method**: `GET`
 - **Express URL**: `http://localhost:5000/api/health`
 - **Spring Boot URL**: `http://localhost:8080/api/health`
+- **ASP.NET Core URL**: `http://localhost:5037/api/v1/Health`
 - **Cấu trúc dữ liệu phản hồi (JSON)**:
   ```json
   {
@@ -251,7 +284,12 @@ VITE_APP_NAME=VanCT Developer Toolkit
 VITE_API_URL=http://localhost:5000
 VITE_EXPRESS_API_URL=http://localhost:5000
 VITE_SPRING_API_URL=http://localhost:8080
+VITE_ASPNET_API_URL=http://localhost:5037
 ```
+
+For the React production container, set `VITE_ASPNET_API_URL` at image build time
+to the reachable ASP.NET Core API URL. The current `docker-compose.yml` does not
+include the ASP.NET Core service; run it separately or add it to the deployment setup.
 
 ### Express Backend (`express-backend/.env`)
 ```ini
@@ -278,4 +316,3 @@ CORS_ORIGIN=*
 | **Giấy phép** | MIT — Sử dụng tự do cho mục đích cá nhân và thương mại |
 
 > 🤝 Mọi đóng góp cải tiến đều được chào đón. Xem [bộ tiêu chuẩn kỹ thuật](./readme/README.md) để biết quy trình PR và coding conventions trước khi đóng góp.
-

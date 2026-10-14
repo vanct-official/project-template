@@ -102,7 +102,81 @@ export const backendCommands = [
       "npm install express-rate-limit"
     ],
     tags: ["rate-limit", "security", "ddos", "throttling", "express"]
+  },
+  
+  {
+    id: "dotnet-sdk",
+    name: ".NET SDK",
+    category: "Backend",
+    technology: ".NET / C#",
+    description: "Install and verify the .NET SDK used to create, build, and run ASP.NET Core applications.",
+    link: "https://dotnet.microsoft.com/download",
+    type: "install",
+    commands: [
+      "dotnet --info",
+      "dotnet --list-sdks",
+      "dotnet --list-runtimes"
+    ],
+    tags: ["dotnet", "sdk", "csharp", "aspnet", "install", "runtime"]
+  },
+  {
+    id: "aspnet-webapi-setup",
+    name: "ASP.NET Core Web API",
+    category: "Backend",
+    technology: "C# / ASP.NET Core",
+    description: "Create an ASP.NET Core Web API project using controller-based routing.",
+    link: "https://learn.microsoft.com/aspnet/core/web-api/",
+    type: "create",
+    commands: [
+      "dotnet new webapi --use-controllers -n AspNetBackend",
+      "cd AspNetBackend",
+      "dotnet restore",
+      "dotnet run"
+    ],
+    tags: ["aspnet", "aspnetcore", "dotnet", "csharp", "webapi", "rest", "controllers", "create"]
+  },
+  {
+    id: "aspnet-build",
+    name: "ASP.NET Core Build",
+    category: "Backend",
+    technology: ".NET CLI",
+    description: "Compile an ASP.NET Core project and check for build errors.",
+    link: "https://learn.microsoft.com/dotnet/core/tools/dotnet-build",
+    type: "build",
+    commands: [
+      "dotnet build",
+      "dotnet build --configuration Release"
+    ],
+    tags: ["dotnet", "build", "compile", "release", "aspnet"]
+  },
+  {
+    id: "aspnet-watch",
+    name: "ASP.NET Core Development",
+    category: "Backend",
+    technology: ".NET CLI",
+    description: "Run the application with development-time file watching.",
+    link: "https://learn.microsoft.com/dotnet/core/tools/dotnet-watch",
+    type: "development",
+    commands: [
+      "dotnet watch run"
+    ],
+    tags: ["dotnet", "watch", "development", "hot reload", "aspnet"]
+  },
+  {
+    id: "aspnet-ef-sqlserver",
+    name: "Entity Framework Core SQL Server",
+    category: "Backend",
+    technology: "C# / EF Core / SQL Server",
+    description: "Add Entity Framework Core packages for SQL Server database access.",
+    link: "https://learn.microsoft.com/ef/core/providers/sql-server/",
+    type: "install",
+    commands: [
+      "dotnet add package Microsoft.EntityFrameworkCore.SqlServer",
+      "dotnet add package Microsoft.EntityFrameworkCore.Design"
+    ],
+    tags: ["dotnet", "efcore", "entity framework", "sql server", "database", "orm", "migration"]
   }
+
 ];
 
 export default backendCommands;

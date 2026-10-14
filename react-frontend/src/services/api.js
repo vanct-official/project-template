@@ -5,7 +5,7 @@
  * All functionality is delegated to the centralized API architecture in `src/api/`.
  */
 
-import http, { expressHttp, springHttp } from '../api/http';
+import http, { aspnetHttp, expressHttp, springHttp } from '../api/http';
 import { healthApi } from '../api/health.api';
 
 // URLs for both backend services
@@ -18,14 +18,19 @@ export const EXPRESS_URL =
 export const SPRING_URL =
   import.meta.env.VITE_SPRING_API_URL || 'http://localhost:8080';
 
+export const ASPNET_URL =
+  import.meta.env.VITE_ASPNET_API_URL || 'http://localhost:5037';
+
 // Axios client instances
 export const expressClient = expressHttp;
 export const springClient = springHttp;
+export const aspnetClient = aspnetHttp;
 export const apiClient = http;
 
 // Health status helpers
 export const getExpressHealthStatus = (options) => healthApi.getExpressHealth(options);
 export const getSpringHealthStatus = (options) => healthApi.getSpringHealth(options);
+export const getAspNetHealthStatus = (options) => healthApi.getAspNetHealth(options);
 export const getParallelHealthStatus = (options) => healthApi.getParallelHealth(options);
 export const getHealthStatus = getExpressHealthStatus;
 

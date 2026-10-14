@@ -7,10 +7,12 @@ const expressBase =
   import.meta.env.VITE_API_BASE_URL ||
   'http://localhost:5000';
 const springBase = import.meta.env.VITE_SPRING_API_URL || 'http://localhost:8080';
+const aspnetBase = import.meta.env.VITE_ASPNET_API_URL || 'http://localhost:5037';
 
 export default function HealthPage() {
   const expressHealthUrl = `${expressBase}${API_ENDPOINTS.health.check}`;
   const springHealthUrl = `${springBase}${API_ENDPOINTS.health.check}`;
+  const aspnetHealthUrl = `${aspnetBase}${API_ENDPOINTS.health.aspnetCheck}`;
   const springRootUrl = `${springBase}${API_ENDPOINTS.system.root}`;
   const expressRootUrl = `${expressBase}${API_ENDPOINTS.system.root}`;
 
@@ -31,7 +33,7 @@ export default function HealthPage() {
           <div className="mb-4">
             <h1 className="h4 fw-bold mb-1">Kiểm tra hệ thống Backend (API Health)</h1>
             <p className="text-secondary small mb-0">
-              Trang giám sát tình trạng hoạt động và tài nguyên của máy chủ Express Backend tại cổng 5000.
+              Trang giám sát tình trạng hoạt động của các dịch vụ Express, Spring Boot và ASP.NET Core.
             </p>
           </div>
 
@@ -81,6 +83,21 @@ export default function HealthPage() {
                           target="_blank"
                           rel="noreferrer"
                           className="btn btn-xs btn-outline-success"
+                        >
+                          Mở tab mới <i className="bi bi-box-arrow-up-right ms-1" />
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span className="badge bg-info text-dark font-monospace">GET</span></td>
+                      <td><code>{aspnetHealthUrl}</code></td>
+                      <td><strong>ASP.NET Core</strong>: Trạng thái API, môi trường và phiên bản</td>
+                      <td>
+                        <a
+                          href={aspnetHealthUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn btn-xs btn-outline-info"
                         >
                           Mở tab mới <i className="bi bi-box-arrow-up-right ms-1" />
                         </a>

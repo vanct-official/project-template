@@ -14,7 +14,7 @@ Thư mục `src/api/` chịu trách nhiệm toàn bộ việc cấu hình HTTP C
    - Khởi tạo và cấu hình Axios với `baseURL`, `timeout`, default headers.
    - Gắn Authorization token (Bearer token) tự động qua Request Interceptor.
    - Chuẩn hóa thông báo lỗi thống nhất qua Response Interceptor.
-   - Cung cấp `createHttpClient` để mở rộng khi kết nối nhiều backend song song (Express, Spring Boot).
+   - Cung cấp `createHttpClient` để kết nối nhiều backend song song (Express, Spring Boot, ASP.NET Core).
 3. **Mô-đun hóa theo Tài nguyên (`*.api.js`)**:
    - Gom nhóm các hàm gọi API theo từng đối tượng nghiệp vụ (ví dụ: `health.api.js`, `books.api.js`, `users.api.js`).
    - Hỗ trợ hủy request (`AbortController` / `signal`), truyền query parameters, upload file multipart.
@@ -30,9 +30,25 @@ src/api/
 ├── README.md        # Hướng dẫn chi tiết về tầng API
 ├── endpoints.js     # Danh sách URI paths và hàm sinh endpoint động
 ├── http.js          # Axios client instance, interceptors, error handler
-├── health.api.js    # Module API kiểm tra sức khỏe hệ thống (Express / Spring Boot)
+├── health.api.js    # Module API kiểm tra sức khỏe các backend
+├── aspnet-samples.api.js # Module gọi sample endpoints của ASP.NET Core
 └── index.js         # Barrel export xuất các module ra ngoài
 ```
+
+## Kết nối ASP.NET Core
+
+Client ASP.NET Core dùng `VITE_ASPNET_API_URL` (mặc định `http://localhost:5037`).
+Các lời gọi API được cung cấp trong `aspnetSamplesApi`:
+
+```javascript
+import { aspnetSamplesApi } from '../api';
+
+const response = await aspnetSamplesApi.getAll();
+const samples = response.data.data;
+```
+
+Module hỗ trợ `getAll`, `getById(id)` và `create(sample)`; các hàm nhận Axios
+config tùy chọn để truyền `AbortSignal` hoặc cấu hình request khác.
 
 ---
 
