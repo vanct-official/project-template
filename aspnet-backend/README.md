@@ -8,7 +8,7 @@ This directory contains a production-oriented ASP.NET Core Web API that follows 
 - Centralized exception handling and consistent `ProblemDetails` responses
 - SQL Server + EF Core configuration with sample data models
 - JWT authentication support with environment-based configuration
-- Swagger/OpenAPI documentation in development
+- Swagger UI and OpenAPI documentation in development
 - Health endpoint aligned with the Express and Spring backends
 - Restricted CORS configuration for the React development server
 
@@ -39,7 +39,9 @@ This directory contains a production-oriented ASP.NET Core Web API that follows 
    dotnet run --project aspnet-backend.csproj
    ```
    The default HTTP URL is `http://localhost:5037`; React connects to it through `VITE_ASPNET_API_URL`.
-4. Open the OpenAPI document at `http://localhost:5037/openapi/v1.json`.
+4. Open Swagger UI at `http://localhost:5037/swagger`.
+   The Swagger document is available at `http://localhost:5037/swagger/v1/swagger.json`;
+   the existing OpenAPI endpoint remains available at `http://localhost:5037/openapi/v1.json`.
 
 ## React integration
 

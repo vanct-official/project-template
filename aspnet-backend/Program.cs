@@ -42,6 +42,20 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new()
+    {
+        Title = "ASP.NET Backend API",
+        Version = "v1",
+        Description = "Versioned REST API for the fullstack project template."
+    });
+    options.DocInclusionPredicate((documentName, apiDescription) =>
+        string.IsNullOrEmpty(apiDescription.GroupName) || apiDescription.GroupName == documentName);
+    options.IncludeXmlComments(Path.Combine(
+        AppContext.BaseDirectory,
+        $"{typeof(Program).Assembly.GetName().Name}.xml"));
+});
 
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddApplicationServices();
@@ -83,6 +97,11 @@ app.UseHttpsRedirection();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "ASP.NET Backend API v1");
+    });
 }
 
 app.UseRouting();
@@ -95,7 +114,7 @@ app.MapGet("/", () => Results.Json(new
     success = true,
     message = "AspNet Backend API is running",
     version = "1.0.0",
-    documentation = "/swagger",
+    documentation = app.Environment.IsDevelopment() ? "/swagger" : null,
     health = "/api/v1/Health",
     timestamp = DateTimeOffset.UtcNow
 }));

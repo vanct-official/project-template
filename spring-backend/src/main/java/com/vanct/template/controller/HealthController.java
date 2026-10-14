@@ -4,6 +4,7 @@ import com.vanct.template.dto.ApiResponse;
 import com.vanct.template.dto.HealthDataDto;
 import com.vanct.template.service.HealthService;
 import com.vanct.template.util.ResponseUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/health")
+@Tag(name = "Health", description = "Health check operations")
 public class HealthController {
 
     private final HealthService healthService;

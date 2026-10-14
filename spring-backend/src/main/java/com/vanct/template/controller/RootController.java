@@ -1,5 +1,6 @@
 package com.vanct.template.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import java.util.Map;
  * Equivalent to app.get('/') in express-backend/src/app.js
  */
 @RestController
+@Tag(name = "System", description = "Service status and information")
 public class RootController {
 
     @Value("${app.name:Spring Boot RESTful API Server}")
@@ -25,13 +27,16 @@ public class RootController {
     @Value("${app.author:Chu Thế Văn (VanCt)}")
     private String author;
 
+    @Value("${springdoc.swagger-ui.enabled:false}")
+    private boolean swaggerUiEnabled;
+
     @GetMapping("/")
     public ResponseEntity<Map<String, Object>> rootWelcome() {
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("success", true);
         response.put("message", appName + " is running");
         response.put("version", version);
-        response.put("documentation", "/api");
+        response.put("documentation", swaggerUiEnabled ? "/swagger" : "/api");
         response.put("health", "/api/health");
         response.put("timestamp", Instant.now().toString());
         response.put("author", author);

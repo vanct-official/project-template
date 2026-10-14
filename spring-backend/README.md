@@ -73,6 +73,10 @@ cd spring-backend
 mvn spring-boot:run
 ```
 
+Khi chạy với profile `dev`, mở Swagger UI tại `http://localhost:8080/swagger`
+và tài liệu OpenAPI tại `http://localhost:8080/v3/api-docs`. Profile `prod`
+tắt cả hai endpoint này theo mặc định.
+
 ### 3. Đóng gói & Chạy file JAR
 ```bash
 mvn clean package -DskipTests

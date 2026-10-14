@@ -7,6 +7,16 @@ const healthRoute = require('./health.route');
 router.use('/health', healthRoute);
 
 // Base route for quick API welcome / status
+/**
+ * @swagger
+ * /api:
+ *   get:
+ *     summary: Get the API welcome message
+ *     tags: [System]
+ *     responses:
+ *       200:
+ *         description: API status and available endpoint links
+ */
 router.get('/', (req, res) => {
   res.json({
     success: true,

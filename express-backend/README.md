@@ -54,6 +54,8 @@ npm run dev
 Server sẽ khởi chạy tại:
 - **API URL**: `http://localhost:5000`
 - **Health Check**: `http://localhost:5000/api/health`
+- **Swagger UI**: `http://localhost:5000/api-docs` (development only)
+- **OpenAPI JSON**: `http://localhost:5000/api-docs.json` (development only)
 
 ### 4. Chạy ở môi trường Production
 ```bash
@@ -68,4 +70,3 @@ docker build -t express-backend:latest .
 # Chạy container
 docker run -d -p 5000:5000 --env-file .env --name express-backend express-backend:latest
 ```
-

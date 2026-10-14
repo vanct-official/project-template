@@ -71,6 +71,10 @@ Dự án template toàn diện được thiết kế theo kiến trúc module ch
 | **Spring Backend** | [`spring-backend/`](./spring-backend/) | Java 17 LTS, Spring Boot 3.3.4, Maven | `8080` | `http://localhost:8080/api/health` |
 | **ASP.NET Backend** | [`aspnet-backend/`](./aspnet-backend/) | .NET 10, ASP.NET Core Web API, EF Core | `5037` | `http://localhost:5037/api/v1/Health` |
 
+Swagger UI có sẵn trong môi trường phát triển tại `/api-docs` (Express),
+`/swagger` (Spring Boot) và `/swagger` (ASP.NET Core). Spring Boot tắt Swagger
+khi dùng profile `prod`; ASP.NET Core chỉ bật Swagger trong môi trường Development.
+
 ---
 
 ## ✨ Điểm nổi bật (Features)
@@ -84,6 +88,7 @@ Dự án template toàn diện được thiết kế theo kiến trúc module ch
 ### 2. Express Backend (`express-backend`)
 - **Kiến trúc phân lớp chuẩn**: Tách biệt rõ ràng `routes`, `controllers`, `services`, `middlewares`, `config`, `utils`.
 - **Bảo mật & Tối ưu**: Tích hợp sẵn `helmet`, `cors`, `compression`, `morgan` ghi log HTTP.
+- **Swagger UI**: Tài liệu tương tác tại `http://localhost:5000/api-docs` trong môi trường development.
 - **Chuẩn hóa phản hồi (Standard Envelope)**: Định dạng `{ success, message, data, timestamp }` nhất quán cho mọi API.
 - **Xử lý ngoại lệ tập trung**: Bắt lỗi 404 cho route chưa định nghĩa và middleware xử lý lỗi 500 toàn cục.
 
@@ -91,11 +96,13 @@ Dự án template toàn diện được thiết kế theo kiến trúc module ch
 - **Kiến trúc phân lớp đồng bộ 1:1**: Tổ chức theo `controller`, `service`, `dto`, `exception`, `config`, `util`.
 - **RESTful API chuẩn hóa**: Triển khai đầy đủ `@RestController`, `@RestControllerAdvice` (`GlobalExceptionHandler`).
 - **Khớp chuẩn định dạng JSON**: Cấu trúc phản hồi `ApiResponse<T>` đồng nhất tuyệt đối với ExpressJS.
+- **Swagger UI**: Tài liệu API tại `http://localhost:8080/swagger` trong profile `dev`; bị tắt ở profile `prod`.
 - **Tính toán tài nguyên thực**: Báo cáo chính xác thông số bộ nhớ JVM (`RSS`, `Heap Total`, `Heap Used`), Uptime và phiên bản Java.
 
 ### 4. ASP.NET Core Backend (`aspnet-backend`)
 - **API có phiên bản**: Health và sample endpoints theo cấu trúc `/api/v1/...`.
 - **EF Core + SQL Server**: Tách lớp controller, service, data và cấu hình kết nối an toàn qua biến môi trường/User Secrets.
+- **Swagger UI**: Tài liệu API tại `http://localhost:5037/swagger` trong môi trường Development; OpenAPI JSON có tại `/swagger/v1/swagger.json`.
 - **Kết nối React**: Dashboard gọi health endpoint ASP.NET; CORS giới hạn theo danh sách origin của frontend.
 
 ---
